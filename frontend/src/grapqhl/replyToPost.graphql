@@ -1,0 +1,6 @@
+
+mutation replyToPost($postId: ID!, $message: String!) {
+    replyTo(postId: $postId, message: $message) {
+        id
+    }
+}

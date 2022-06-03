@@ -1,0 +1,6 @@
+
+mutation createPost($message: String!) {
+    createPost(message: $message) {
+        id
+    }
+}

@@ -1,0 +1,15 @@
+
+subscription subscribeTimeline {
+    onTimelineUpdate {
+        id
+        message
+        postedAt
+        user {
+            displayName
+            username
+        }
+        replies {
+            id
+        }
+    }
+}

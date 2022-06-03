@@ -1,0 +1,15 @@
+
+query fetchTimeline {
+    timeline {
+        id
+        message
+        postedAt
+        user {
+            displayName
+            username
+        }
+        replies {
+            id
+        }
+    }
+}

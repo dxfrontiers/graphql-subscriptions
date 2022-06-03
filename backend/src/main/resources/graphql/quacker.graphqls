@@ -1,0 +1,30 @@
+type Query {
+    post(id: ID!): Post!
+    timeline: [Post!]!
+}
+
+type Mutation {
+    createPost(message: String!): Post!
+    replyTo(postId: ID!, message: String!): Post!
+}
+
+type Subscription {
+    onTimelineUpdate: [Post!]
+}
+
+scalar DateTime
+
+type Post {
+    id: ID!
+    user: User!
+    message: String!
+    postedAt: DateTime!
+    replies: [Post!]
+    replyTo: Post
+}
+
+type User {
+    username: ID!
+    displayName: String!
+    posts: [Post!]!
+}

@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 
 import { Post, PostModel } from "./Post";
@@ -10,14 +11,14 @@ export interface FeedProps {
 export const Feed: React.FC<FeedProps> = (props) => {
   const { posts } = props;
   return (
-    <div>
-      <div>
+    <Box>
+      <Box>
         <h2>Home</h2>
-      </div>
+      </Box>
       <QuakBox />
-      {posts.map((post) => {
-        return <Post post={post}></Post>;
+      {posts.map((post, index) => {
+        return <Post key={index} post={post}></Post>;
       })}
-    </div>
+    </Box>
   );
 };

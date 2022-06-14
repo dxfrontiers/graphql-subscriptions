@@ -10,9 +10,11 @@ import { deepPurple } from "@mui/material/colors";
 import React from "react";
 import { PostModel } from "./Post";
 
-interface ReplyProps {
+export interface ReplyModel {
   reply: Omit<PostModel, "replies">;
 }
+
+interface ReplyProps extends ReplyModel {}
 
 export const Reply: React.FC<ReplyProps> = (props) => {
   const {
@@ -37,7 +39,12 @@ export const Reply: React.FC<ReplyProps> = (props) => {
         subheader={postedAt.toLocaleString()}
       />
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        <Typography
+          component={"span"}
+          sx={{ fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+        >
           {message}
         </Typography>
       </CardContent>
@@ -48,7 +55,7 @@ export const Reply: React.FC<ReplyProps> = (props) => {
 const StyledCard = styled(Card)`
   border-bottom: 1px solid #2db83d;
 
-  :not(:first-child) {
+  :not(:first-of-type) {
     margin-top: 10px;
   }
 `;

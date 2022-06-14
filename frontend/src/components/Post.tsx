@@ -61,7 +61,12 @@ export const Post: React.FC<PostProps> = (props) => {
         subheader={postedAt.toLocaleString()}
       />
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        <Typography
+          component={"span"}
+          sx={{ fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+        >
           {message}
         </Typography>
       </CardContent>
@@ -119,9 +124,14 @@ export const Post: React.FC<PostProps> = (props) => {
       </Card>
       {replies && (
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {replies.map((reply) => {
-              return <Reply reply={reply}></Reply>;
+          <Typography
+            component={"span"}
+            sx={{ fontSize: 14 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            {replies.map((reply, index) => {
+              return <Reply key={index} reply={reply}></Reply>;
             })}
           </Typography>
         </CardContent>
@@ -132,7 +142,7 @@ export const Post: React.FC<PostProps> = (props) => {
 
 const StyledCard = styled(Card)`
   border-bottom: 1px solid #2db83d;
-  :not(:first-child) {
+  :not(:first-of-type) {
     margin-top: 10px;
   }
 `;

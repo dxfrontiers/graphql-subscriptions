@@ -1,5 +1,5 @@
 import { Avatar, Button, Grid, styled, TextField } from "@mui/material";
-import lightGreen from "@mui/material/colors/lightGreen";
+import { lightGreen } from "@mui/material/colors";
 import React, { useState } from "react";
 import { postsFixture } from "../fixtures/posts.fixture";
 

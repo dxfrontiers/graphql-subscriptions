@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { SidebarOption } from "./SidebarOption";
 import { Abc, Home } from "@mui/icons-material";
 import { Button, Icon, styled } from "@mui/material";
+import React, { useState } from "react";
 import quaker from "../assets/quaker.png";
+import { SidebarOption } from "./SidebarOption";
 
 export const Sidebar: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<Number>(1);
@@ -30,7 +30,7 @@ export const Sidebar: React.FC = () => {
         onClick={(event) => handleClickListItem(event, 2)}
         active={selectedIndex === 2}
       />
-      <StyledButton variant="outlined">Quak</StyledButton>
+      <StyledButton>Quak</StyledButton>
     </div>
   );
 };

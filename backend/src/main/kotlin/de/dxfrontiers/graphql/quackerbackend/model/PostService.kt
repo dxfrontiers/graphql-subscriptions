@@ -33,7 +33,7 @@ class PostService(private val postMap: IMap<String, Post>, private val postIdGen
     return p
   }
 
-  fun watch(callback: (post: Post) -> Unit): UnregisterHandler {
+  fun watch(callback: WatchCallback): UnregisterHandler {
     // only watching for added events, as we're not supporting edits right now
     val listener = EntryAddedListener<String, Post> { callback(it.value) }
     val uuid = postMap.addEntryListener(listener, true)
@@ -46,5 +46,5 @@ class PostService(private val postMap: IMap<String, Post>, private val postIdGen
   }
 
 }
-
+typealias WatchCallback = (post: Post) -> Unit
 typealias UnregisterHandler = () -> Unit 

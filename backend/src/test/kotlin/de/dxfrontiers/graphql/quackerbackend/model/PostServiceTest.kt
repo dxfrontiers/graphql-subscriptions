@@ -56,6 +56,23 @@ internal class PostServiceTest {
     assertThat(posts).extracting(Post::message).containsExactly("Post 7", "Post 6", "Post 5", "Post 4", "Post 3")
   }
 
+  @Test
+  internal fun `recent posts will only contain posts that are not a reply to another post`() {
+    postService.createPost(user, "Post 1", LocalDateTime.parse("2022-03-01T10:11:12"))
+    postService.createPost(user, "Post 2", LocalDateTime.parse("2022-03-02T10:11:12"))
+    postService.createPost(user, "Post 6", LocalDateTime.parse("2022-03-03T11:12:13"))
+    postService.createPost(user, "Post 3", LocalDateTime.parse("2022-03-03T10:11:12"))
+    postService.createPost(user, "Post 4", LocalDateTime.parse("2022-03-03T11:11:12"))
+    val post5 = postService.createPost(user, "Post 5", LocalDateTime.parse("2022-03-03T11:12:12"))
+    postService.createReply(user, post5.id, "Reply 1 to Post 5", LocalDateTime.parse("2022-03-03T11:13:12"))
+    postService.createReply(user, post5.id, "Reply 2 to Post 5", LocalDateTime.parse("2022-03-03T11:14:12"))
+    postService.createPost(user, "Post 7", LocalDateTime.parse("2022-03-04T10:11:12"))
+
+    val posts = postService.getNewestPosts(5)
+
+    assertThat(posts).size().isEqualTo(5)
+    assertThat(posts).extracting(Post::message).containsExactly("Post 7", "Post 6", "Post 5", "Post 4", "Post 3")
+  }
 
   @Test
   internal fun `creating a post will notify listeners`() {

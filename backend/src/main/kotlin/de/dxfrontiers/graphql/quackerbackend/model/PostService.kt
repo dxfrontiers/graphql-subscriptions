@@ -10,7 +10,10 @@ import java.time.LocalDateTime
 class PostService(private val postMap: IMap<String, Post>, private val postIdGenerator: FlakeIdGenerator) {
 
   fun getNewestPosts(count: Int): List<Post> {
-    return postMap.values.sortedByDescending { it.postedAt }.take(count)
+    return postMap.values
+      .sortedByDescending { it.postedAt }
+      .filter { it.replyToPostId == null }
+      .take(count)
   }
 
   fun getPost(id: String): Post? = postMap[id]

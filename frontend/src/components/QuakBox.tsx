@@ -1,16 +1,30 @@
+import { useMutation } from "@apollo/client";
 import { Avatar, Button, Grid, styled, TextField } from "@mui/material";
 import { lightGreen } from "@mui/material/colors";
 import React, { useState } from "react";
 import { postsFixture } from "../fixtures/posts.fixture";
+import { useCreatePostMutation } from "../generated/graphql";
 
 export const QuakBox: React.FC = () => {
   const [tweetMessage, setTweetMessage] = useState("");
+
+  const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+    variables: {
+      message: " value for 'message'",
+    },
+  });
 
   const sendQuak = (e: any) => {
     e.preventDefault();
     /*
      * Graphgql stuff to save the Quak
      */
+    createPostMutation({
+      variables: {
+        message: tweetMessage,
+      },
+    });
+    console.log(data);
     console.log({ tweetMessage });
   };
 

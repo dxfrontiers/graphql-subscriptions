@@ -11,22 +11,31 @@ import com.hazelcast.nio.ObjectDataInput
 import com.hazelcast.nio.ObjectDataOutput
 import com.hazelcast.nio.serialization.StreamSerializer
 import de.dxfrontiers.graphql.quackerbackend.model.Post
+import de.dxfrontiers.graphql.quackerbackend.model.User
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class HazelcastConfiguration {
 
+  private val objectMapper = ObjectMapper()
+    .registerModule(JavaTimeModule())
+    .registerModule(KotlinModule.Builder().build())
 
   @Bean
   fun hazelcastInstance(): HazelcastInstance? {
     val c = Config.loadDefault()
-    c.serializationConfig.serializerConfigs.add(
-      SerializerConfig().apply {
+    c.serializationConfig.serializerConfigs.apply {
+      add(SerializerConfig().apply {
         typeClass = Post::class.java
-        implementation = PostSerializer()
-      }
-    )
+        implementation = PostSerializer(objectMapper)
+      })
+      add(SerializerConfig().apply {
+        typeClass = User::class.java
+        implementation = UserSerializer(objectMapper)
+      })
+    }
     return Hazelcast.newHazelcastInstance(c)
   }
 
@@ -36,23 +45,33 @@ class HazelcastConfiguration {
   @Bean
   fun postIdGenerator() = hazelcastInstance()!!.getFlakeIdGenerator("postIdGenerator")
 
+  @Bean
+  fun userMap() = hazelcastInstance()!!.getMap<String, User>("users")
 }
 
 
-class PostSerializer : StreamSerializer<Post> {
-
-  private val objectMapper = ObjectMapper()
-    .registerModule(JavaTimeModule())
-    .registerModule(KotlinModule.Builder().build())
+class PostSerializer(private val objectMapper: ObjectMapper) : StreamSerializer<Post> {
 
   override fun write(out: ObjectDataOutput, `object`: Post) {
     objectMapper.writeValue(out, `object`)
   }
 
-  override fun getTypeId(): Int = 14_203 // this is just some random number
+  override fun getTypeId(): Int = 14_203 // type identifier for posts
 
   override fun read(`in`: ObjectDataInput): Post {
     return objectMapper.readValue(`in`, Post::class.java)
   }
+}
 
+class UserSerializer(private val objectMapper: ObjectMapper) : StreamSerializer<User> {
+
+  override fun write(out: ObjectDataOutput, `object`: User) {
+    objectMapper.writeValue(out, `object`)
+  }
+
+  override fun getTypeId(): Int = 14_204 // type identifier for users
+
+  override fun read(`in`: ObjectDataInput): User {
+    return objectMapper.readValue(`in`, User::class.java)
+  }
 }

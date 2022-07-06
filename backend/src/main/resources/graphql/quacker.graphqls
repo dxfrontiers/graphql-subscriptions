@@ -26,5 +26,4 @@ type Post {
 type User {
     username: ID!
     displayName: String!
-    posts: [Post!]!
 }

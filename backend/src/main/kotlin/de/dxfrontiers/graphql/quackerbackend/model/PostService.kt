@@ -15,20 +15,20 @@ class PostService(private val postMap: IMap<String, Post>, private val postIdGen
 
   fun getPost(id: String): Post? = postMap[id]
 
-  fun createPost(message: String) = createPost(message, LocalDateTime.now())
-  fun createPost(message: String, time: LocalDateTime): Post {
-    val p = Post(postIdGenerator.newId().toString(), message, time)
+  fun createPost(user: User, message: String) = createPost(user, message, LocalDateTime.now())
+  fun createPost(user: User, message: String, time: LocalDateTime): Post {
+    val p = Post(postIdGenerator.newId().toString(), message, time, user.username)
     postMap.put(p.id, p)
     return p
   }
 
-  fun createReply(postId: String, message: String) = createReply(postId, message, LocalDateTime.now())
-  fun createReply(postId: String, message: String, time: LocalDateTime): Post {
+  fun createReply(user: User, postId: String, message: String) = createReply(user, postId, message, LocalDateTime.now())
+  fun createReply(user: User, postId: String, message: String, time: LocalDateTime): Post {
     // simple sanity check. This will not ensure absolute consistency 
     if (!postMap.containsKey(postId))
       throw java.lang.IllegalArgumentException("No post with id '$postId' to reply to")
 
-    val p = Post(postIdGenerator.newId().toString(), message, time, postId)
+    val p = Post(postIdGenerator.newId().toString(), message, time, user.username, postId)
     postMap.put(p.id, p)
     return p
   }

@@ -37,7 +37,7 @@ internal class GraphQLSubscriptionControllerTest {
         Thread {
           // simulate defer on another thread
           Thread.sleep(1000)
-          callback(Post("12", "Message", LocalDateTime.now()))
+          callback(Post("12", "Message", LocalDateTime.now(), "testuser"))
         }.start()
         
         return@thenAnswer {}

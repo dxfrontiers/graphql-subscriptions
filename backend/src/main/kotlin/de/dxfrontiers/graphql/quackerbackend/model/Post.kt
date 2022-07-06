@@ -6,5 +6,6 @@ data class Post(
   val id: String,
   val message: String,
   val postedAt: LocalDateTime,
+  val username: String,
   val replyToPostId: String? = null
 )

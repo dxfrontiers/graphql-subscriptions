@@ -3,6 +3,8 @@ package de.dxfrontiers.graphql.quackerbackend.controller
 import de.dxfrontiers.graphql.quackerbackend.GraphQLConfiguration
 import de.dxfrontiers.graphql.quackerbackend.model.Post
 import de.dxfrontiers.graphql.quackerbackend.model.PostService
+import de.dxfrontiers.graphql.quackerbackend.model.User
+import de.dxfrontiers.graphql.quackerbackend.model.UserService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -28,13 +30,22 @@ internal class GraphQLControllerTest {
   @MockBean
   lateinit var postService: PostService
 
+  @MockBean
+  lateinit var userService: UserService
+
   @Test
   internal fun `retrieve a single post by id`() {
 
     val date = "2022-07-23T14:13:02"
     stubbing(postService) {
       on { getPost(any()) }.thenReturn(
-        Post("12", "Message", LocalDateTime.parse(date))
+        Post("12", "Message", LocalDateTime.parse(date), "testuser")
+      )
+    }
+
+    stubbing(userService) {
+      on { getUser(eq("testuser")) }.thenReturn(
+        User("testuser", "Testing User")
       )
     }
 
@@ -47,15 +58,30 @@ internal class GraphQLControllerTest {
           message
           id
           postedAt
+          user {
+            username
+            displayName
+          }
         }
       }
     """
     )
       .execute()
       .errors().verify()
-      .path("$.data.post.id").hasValue().matchesJson("\"12\"")
-      .path("$.data.post.message").hasValue().matchesJson("\"Message\"")
-      .path("$.data.post.postedAt").hasValue().matchesJson("\"$date\"")
+      .path("$.data.post").matchesJson(
+        //language=json
+        """
+        {
+          "id": "12",
+          "message": "Message",
+          "postedAt": "$date",
+          "user": {
+            "username": "testuser",
+            "displayName": "Testing User"
+          }
+        }
+      """
+      )
   }
 
   @Test
@@ -63,12 +89,12 @@ internal class GraphQLControllerTest {
 
     stubbing(postService) {
       on { getPost(any()) }.thenReturn(
-        Post("12", "Message", LocalDateTime.now())
+        Post("12", "Message", LocalDateTime.now(), "testuser")
       )
       on { getRepliesTo(argThat<Post> { id == "12" }) }.thenReturn(
         listOf(
-          Post("13", "Reply 1", LocalDateTime.now()),
-          Post("14", "Reply 2", LocalDateTime.now())
+          Post("13", "Reply 1", LocalDateTime.now(), "testuser"),
+          Post("14", "Reply 2", LocalDateTime.now(), "testuser")
         )
       )
     }
@@ -106,10 +132,10 @@ internal class GraphQLControllerTest {
 
     stubbing(postService) {
       on { getPost(eq("12")) }.thenReturn(
-        Post("12", "Message", LocalDateTime.now(), replyToPostId = "11")
+        Post("12", "Message", LocalDateTime.now(), replyToPostId = "11", username = "testuser")
       )
       on { getPost(eq("11")) }.thenReturn(
-        Post("11", "Original Post", LocalDateTime.now())
+        Post("11", "Original Post", LocalDateTime.now(), "testuser")
       )
     }
 
@@ -141,11 +167,11 @@ internal class GraphQLControllerTest {
     stubbing(postService) {
       on { getNewestPosts(any()) }.thenReturn(
         listOf(
-          Post("12", "Message 1", LocalDateTime.now()),
-          Post("13", "Message 2", LocalDateTime.now()),
-          Post("14", "Message 3", LocalDateTime.now()),
-          Post("15", "Message 4", LocalDateTime.now()),
-          Post("16", "Message 5", LocalDateTime.now()),
+          Post("12", "Message 1", LocalDateTime.now(), "testuser"),
+          Post("13", "Message 2", LocalDateTime.now(), "testuser"),
+          Post("14", "Message 3", LocalDateTime.now(), "testuser"),
+          Post("15", "Message 4", LocalDateTime.now(), "testuser"),
+          Post("16", "Message 5", LocalDateTime.now(), "testuser"),
         )
       )
     }

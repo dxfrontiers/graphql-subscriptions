@@ -24,6 +24,8 @@ internal class PostServiceTest {
   @Autowired
   lateinit var postMap: IMap<String, Post>
   
+  val user = User("testuser1", "Test User")
+  
   @AfterEach
   internal fun reset() {
     postMap.clear()
@@ -31,21 +33,22 @@ internal class PostServiceTest {
   
   @Test
   internal fun `successful creation of a post`() {
-    val post = postService.createPost("simple message")
+    val post = postService.createPost(user, "simple message")
     
     assertNotNull(post)
     assertEquals("simple message", post.message)
+    assertThat(post.username).isEqualTo(user.username)
   }
   
   @Test
   internal fun `retrieval of the 5 most recent posts`() {
-    postService.createPost("Post 1", LocalDateTime.parse("2022-03-01T10:11:12"))
-    postService.createPost("Post 2", LocalDateTime.parse("2022-03-02T10:11:12"))
-    postService.createPost("Post 6", LocalDateTime.parse("2022-03-03T11:12:13"))
-    postService.createPost("Post 3", LocalDateTime.parse("2022-03-03T10:11:12"))
-    postService.createPost("Post 4", LocalDateTime.parse("2022-03-03T11:11:12"))
-    postService.createPost("Post 5", LocalDateTime.parse("2022-03-03T11:12:12"))
-    postService.createPost("Post 7", LocalDateTime.parse("2022-03-04T10:11:12"))
+    postService.createPost(user, "Post 1", LocalDateTime.parse("2022-03-01T10:11:12"))
+    postService.createPost(user, "Post 2", LocalDateTime.parse("2022-03-02T10:11:12"))
+    postService.createPost(user, "Post 6", LocalDateTime.parse("2022-03-03T11:12:13"))
+    postService.createPost(user, "Post 3", LocalDateTime.parse("2022-03-03T10:11:12"))
+    postService.createPost(user, "Post 4", LocalDateTime.parse("2022-03-03T11:11:12"))
+    postService.createPost(user, "Post 5", LocalDateTime.parse("2022-03-03T11:12:12"))
+    postService.createPost(user, "Post 7", LocalDateTime.parse("2022-03-04T10:11:12"))
     
     val posts = postService.getNewestPosts(5)
     
@@ -62,7 +65,7 @@ internal class PostServiceTest {
     val unregister = postService.watch({ latch.countDown() })
     try {
       
-      postService.createPost("Test Message")
+      postService.createPost(user, "Test Message")
       assertTrue(latch.await(3, TimeUnit.SECONDS), "listener was not called withing three seconds")
     } finally {
       unregister()
@@ -76,7 +79,7 @@ internal class PostServiceTest {
 
   @Test
   internal fun `retrieving an existing post`() {
-    val id = postService.createPost("Simple existing test post").id
+    val id = postService.createPost(user, "Simple existing test post").id
 
     val post = postService.getPost(id)
 
@@ -86,35 +89,36 @@ internal class PostServiceTest {
 
   @Test
   internal fun `create a reply for a post`() {
-    val (id) = postService.createPost("Initial post")
+    val (id) = postService.createPost(user, "Initial post")
 
-    val reply = postService.createReply(id, "Reply")
+    val reply = postService.createReply(user, id, "Reply")
     
     assertThat(reply).isNotNull()
     assertThat(reply.replyToPostId).isEqualTo(id)
     assertThat(reply.message).isEqualTo("Reply")
+    assertThat(reply.username).isEqualTo(user.username)
   }
 
   @Test
   internal fun `replying to a non existing id throws an exception`() {
     assertThat {
-        postService.createReply("certainly not existing", "Some invalid message")
+        postService.createReply(user,"certainly not existing", "Some invalid message")
       }.isFailure()
   }
 
   @Test
   internal fun `retrieve replies to a post`() {
     
-    val id1 = postService.createPost("First Post").id
-    val id2 = postService.createPost("Second Post").id
+    val id1 = postService.createPost(user, "First Post").id
+    val id2 = postService.createPost(user, "Second Post").id
     
-    postService.createReply(id1, "First Reply")
-    postService.createReply(id1, "Second Reply")
-    postService.createReply(id2, "Another Reply")
+    postService.createReply(user, id1, "First Reply")
+    postService.createReply(user, id1, "Second Reply")
+    postService.createReply(user, id2, "Another Reply")
 
 
     val replies1 = postService.getRepliesTo(id1)
-    
+     
     assertThat(replies1).size().isEqualTo(2)
     assertThat(replies1).extracting { it.message }.containsExactlyInAnyOrder("First Reply", "Second Reply")
   }

@@ -62,7 +62,6 @@ export type Subscription = {
 export type User = {
   __typename?: 'User';
   displayName: Scalars['String'];
-  posts: Array<Post>;
   username: Scalars['ID'];
 };
 
@@ -78,12 +77,12 @@ export type FetchPostQueryVariables = Exact<{
 }>;
 
 
-export type FetchPostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string }, replies?: Array<{ __typename?: 'Post', id: string }> | null } };
+export type FetchPostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string }, replies?: Array<{ __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string } }> | null } };
 
 export type FetchTimelineQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchTimelineQuery = { __typename?: 'Query', timeline: Array<{ __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string }, replies?: Array<{ __typename?: 'Post', id: string }> | null }> };
+export type FetchTimelineQuery = { __typename?: 'Query', timeline: Array<{ __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string }, replies?: Array<{ __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string } }> | null }> };
 
 export type ReplyToPostMutationVariables = Exact<{
   postId: Scalars['ID'];
@@ -96,7 +95,7 @@ export type ReplyToPostMutation = { __typename?: 'Mutation', replyTo: { __typena
 export type SubscribeTimelineSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SubscribeTimelineSubscription = { __typename?: 'Subscription', onTimelineUpdate: { __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string }, replies?: Array<{ __typename?: 'Post', id: string }> | null } };
+export type SubscribeTimelineSubscription = { __typename?: 'Subscription', onTimelineUpdate: { __typename?: 'Post', id: string, message: string, postedAt: any, user: { __typename?: 'User', displayName: string, username: string } } };
 
 
 export const CreatePostDocument = gql`
@@ -144,6 +143,12 @@ export const FetchPostDocument = gql`
     }
     replies {
       id
+      message
+      user {
+        displayName
+        username
+      }
+      postedAt
     }
   }
 }
@@ -188,6 +193,12 @@ export const FetchTimelineDocument = gql`
     }
     replies {
       id
+      message
+      user {
+        displayName
+        username
+      }
+      postedAt
     }
   }
 }
@@ -262,9 +273,6 @@ export const SubscribeTimelineDocument = gql`
     user {
       displayName
       username
-    }
-    replies {
-      id
     }
   }
 }

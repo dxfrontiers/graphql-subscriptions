@@ -1,8 +1,9 @@
 /* eslint-disable testing-library/prefer-screen-queries */
 import { render } from "@testing-library/react";
-import { Post, PostModel } from "./Post";
+import { PostComponent } from "./PostComponent";
+import {Post} from "../generated/graphql"
 
-const post: PostModel = {
+const post: Post = {
   id: "123",
   user: { username: "alfons", displayName: "Alfons User" },
   message: "this is my most important message of the day!",
@@ -12,7 +13,7 @@ const post: PostModel = {
 describe("Post", () => {
   it("should render post", () => {
     //Act
-    const { getByText, getByTestId } = render(<Post post={post} />);
+    const { getByText, getByTestId } = render(<PostComponent post={post} />);
 
     //Assert
     expect(getByText(post.user.username)).toBeDefined();

@@ -1,9 +1,7 @@
-import { useMutation } from "@apollo/client";
-import { Avatar, Button, Grid, styled, TextField } from "@mui/material";
-import { lightGreen } from "@mui/material/colors";
-import React, { useState } from "react";
-import { postsFixture } from "../fixtures/posts.fixture";
-import { useCreatePostMutation } from "../generated/graphql";
+import {Avatar, Button, Grid, styled, TextField} from "@mui/material";
+import {lightGreen} from "@mui/material/colors";
+import React, {useState} from "react";
+import {useCreatePostMutation} from "../generated/graphql";
 
 export const QuakBox: React.FC = () => {
   const [tweetMessage, setTweetMessage] = useState("");
@@ -24,13 +22,11 @@ export const QuakBox: React.FC = () => {
         message: tweetMessage,
       },
     });
-    console.log(data);
     console.log({ tweetMessage });
   };
+  console.log(data);
 
-  const avatarChar = postsFixture[0].user.username
-    .substring(0, 1)
-    .toUpperCase();
+  const avatarChar = "R"
 
   return (
     <StyledQuakBox container spacing={2}>

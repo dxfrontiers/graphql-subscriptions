@@ -1,22 +1,14 @@
-import {
-  Avatar,
-  Card,
-  CardContent,
-  CardHeader,
-  styled,
-  Typography,
-} from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
+import {Avatar, Card, CardContent, CardHeader, styled, Typography,} from "@mui/material";
+import {deepPurple} from "@mui/material/colors";
 import React from "react";
-import { PostModel } from "./Post";
+import {Post} from "../generated/graphql"
 
-export interface ReplyModel {
-  reply: Omit<PostModel, "replies">;
+
+export interface ReplyComponentProps {
+  reply: Post
 }
 
-interface ReplyProps extends ReplyModel {}
-
-export const Reply: React.FC<ReplyProps> = (props) => {
+export const ReplyComponent: React.FC<ReplyComponentProps> = (props) => {
   const {
     reply: {
       user: { username },

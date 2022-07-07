@@ -8,8 +8,5 @@ subscription subscribeTimeline {
             displayName
             username
         }
-        replies {
-            id
-        }
     }
 }

@@ -1,8 +1,8 @@
 /* eslint-disable testing-library/prefer-screen-queries */
-import { render } from "@testing-library/react";
-import { Reply, ReplyModel } from "./Reply";
+import {render} from "@testing-library/react";
+import {ReplyComponent, ReplyComponentProps} from "./ReplyComponent";
 
-const reply: ReplyModel = {
+const reply: ReplyComponentProps = {
   reply: {
     id: "123",
     user: { username: "alfons", displayName: "Alfons User" },
@@ -14,7 +14,7 @@ const reply: ReplyModel = {
 describe("Reply", () => {
   it("should render reply", () => {
     //Act
-    const { getByText, queryByTestId } = render(<Reply reply={reply.reply} />);
+    const { getByText, queryByTestId } = render(<ReplyComponent reply={reply.reply} />);
 
     //Assert
     expect(getByText(reply.reply.user.username)).toBeDefined();

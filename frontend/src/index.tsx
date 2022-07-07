@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 const httpLink = new HttpLink({
-  uri: "http://localhost:8080/graphql",
+  uri: "/graphql",
 });
 
 const wsLink = new GraphQLWsLink(

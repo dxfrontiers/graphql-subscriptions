@@ -1,9 +1,4 @@
-import {
-  ChatBubble,
-  FavoriteBorderOutlined,
-  Publish,
-  Repeat,
-} from "@mui/icons-material";
+import {ChatBubble, FavoriteBorderOutlined, Publish, Repeat,} from "@mui/icons-material";
 import {
   Avatar,
   Badge,
@@ -15,29 +10,16 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { lightGreen } from "@mui/material/colors";
+import {lightGreen} from "@mui/material/colors";
 import React from "react";
-import { Reply } from "./Reply";
+import {ReplyComponent} from "./ReplyComponent";
+import {Post} from "../generated/graphql"
 
-interface User {
-  username: string;
-  displayName: string;
+export interface PostComponentProps {
+  post: Post;
 }
 
-export interface PostModel {
-  id: string;
-  user: User;
-  message: string;
-  postedAt: Date;
-  replies?: Omit<PostModel[], "replies">;
-  // replyTo: Post
-}
-
-interface PostProps {
-  post: PostModel;
-}
-
-export const Post: React.FC<PostProps> = (props) => {
+export const PostComponent: React.FC<PostComponentProps> = (props) => {
   const {
     post: {
       user: { username },
@@ -131,7 +113,7 @@ export const Post: React.FC<PostProps> = (props) => {
             gutterBottom
           >
             {replies.map((reply, index) => {
-              return <Reply key={index} reply={reply}></Reply>;
+              return <ReplyComponent key={index} reply={reply}></ReplyComponent>;
             })}
           </Typography>
         </CardContent>

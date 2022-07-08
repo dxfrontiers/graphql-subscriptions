@@ -1,12 +1,12 @@
-import {Avatar, Button, Grid, styled, TextField} from "@mui/material";
-import {lightGreen} from "@mui/material/colors";
-import React, {useState} from "react";
-import {useCreatePostMutation} from "../generated/graphql";
+import { Avatar, Button, Grid, styled, TextField } from "@mui/material";
+import { lightGreen } from "@mui/material/colors";
+import React, { useState } from "react";
+import { useCreatePostMutation } from "../generated/graphql";
 
 export const QuakBox: React.FC = () => {
   const [tweetMessage, setTweetMessage] = useState("");
 
-  const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+  const [createPostMutation, { data }] = useCreatePostMutation({
     variables: {
       message: " value for 'message'",
     },
@@ -26,7 +26,7 @@ export const QuakBox: React.FC = () => {
   };
   console.log(data);
 
-  const avatarChar = "R"
+  const avatarChar = "R";
 
   return (
     <StyledQuakBox container spacing={2}>

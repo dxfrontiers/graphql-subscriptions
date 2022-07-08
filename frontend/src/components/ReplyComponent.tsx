@@ -1,11 +1,17 @@
-import {Avatar, Card, CardContent, CardHeader, styled, Typography,} from "@mui/material";
-import {deepPurple} from "@mui/material/colors";
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  styled,
+  Typography,
+} from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 import React from "react";
-import {Post} from "../generated/graphql"
-
+import { Post } from "../generated/graphql";
 
 export interface ReplyComponentProps {
-  reply: Post
+  reply: Post;
 }
 
 export const ReplyComponent: React.FC<ReplyComponentProps> = (props) => {

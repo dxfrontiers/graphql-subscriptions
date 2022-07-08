@@ -1,7 +1,7 @@
 /* eslint-disable testing-library/prefer-screen-queries */
 import { render } from "@testing-library/react";
+import { Post } from "../generated/graphql";
 import { PostComponent } from "./PostComponent";
-import {Post} from "../generated/graphql"
 
 const post: Post = {
   id: "123",

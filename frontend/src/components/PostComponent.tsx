@@ -17,8 +17,8 @@ import {
 } from "@mui/material";
 import { lightGreen } from "@mui/material/colors";
 import React from "react";
-import { ReplyComponent } from "./ReplyComponent";
 import { Post } from "../generated/graphql";
+import { ReplyComponent } from "./ReplyComponent";
 
 export interface PostComponentProps {
   post: Post;

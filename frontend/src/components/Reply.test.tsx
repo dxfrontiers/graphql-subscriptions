@@ -1,6 +1,6 @@
 /* eslint-disable testing-library/prefer-screen-queries */
-import {render} from "@testing-library/react";
-import {ReplyComponent, ReplyComponentProps} from "./ReplyComponent";
+import { render } from "@testing-library/react";
+import { ReplyComponent, ReplyComponentProps } from "./ReplyComponent";
 
 const reply: ReplyComponentProps = {
   reply: {
@@ -14,7 +14,9 @@ const reply: ReplyComponentProps = {
 describe("Reply", () => {
   it("should render reply", () => {
     //Act
-    const { getByText, queryByTestId } = render(<ReplyComponent reply={reply.reply} />);
+    const { getByText, queryByTestId } = render(
+      <ReplyComponent reply={reply.reply} />
+    );
 
     //Assert
     expect(getByText(reply.reply.user.username)).toBeDefined();

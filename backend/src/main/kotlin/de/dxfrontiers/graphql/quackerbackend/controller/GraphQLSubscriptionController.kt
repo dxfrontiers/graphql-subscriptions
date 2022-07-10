@@ -12,10 +12,12 @@ class GraphQLSubscriptionController(private val postService: PostService) {
   @SubscriptionMapping
   fun onTimelineUpdate(): Flux<Post> {
 
-    return Flux.create { emitter ->
-      val unregister = postService.watch { post -> emitter.next(post) }
+    return Flux.create { sink ->
+      val unregister = postService.watch { 
+          post -> sink.next(post) 
+      }
 
-      emitter.onDispose { unregister() }
+      sink.onDispose { unregister() }
     }
 
   }

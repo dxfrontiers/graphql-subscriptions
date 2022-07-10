@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -7,7 +7,6 @@ import {
   useSubscribeTimelineSubscription,
 } from "../generated/graphql";
 import { PostComponent } from "./PostComponent";
-import { QuakBox } from "./QuakBox";
 
 export const Feed: React.FC = () => {
   const { data: timelineData } = useFetchTimelineQuery();
@@ -26,8 +25,7 @@ export const Feed: React.FC = () => {
   }, [subscriptionData]);
 
   return (
-    <Box>
-      <QuakBox />
+    <Box >
       {timeline.map((post, index) => {
         // @ts-ignore
         return <PostComponent key={index} post={post}></PostComponent>;

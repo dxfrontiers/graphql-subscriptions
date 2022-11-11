@@ -49,7 +49,7 @@ export const SignInPage = () => {
       return " The eMail address is notvalid";
     }
     if (error?.code === "auth/user-not-found") {
-      return " The user fot this eMail address has been disabled.";
+      return " The user for this eMail address has been disabled.";
     }
     return "Authentication Failed!";
   })();
@@ -137,9 +137,9 @@ export const SignInPage = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                {/*<Link href="#" variant="body2">*/}
-                {/*  Forgot password?*/}
-                {/*</Link>*/}
+                <Link variant="body2" component={RouterLink} to="/reset">
+                  Forgot password?
+                </Link>
               </Grid>
               <Grid item>
                 <Link variant="body2" component={RouterLink} to="/signup">

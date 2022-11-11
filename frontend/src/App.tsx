@@ -18,6 +18,7 @@ import { NavBar } from "./components/NavBar";
 import { QuakBox } from "./components/QuakBox";
 import { clientFactory } from "./graphql/client";
 import { quackerTheme } from "./theme";
+import { PasswordResetPage } from "./pages/PasswordResetPage";
 
 function App() {
   const [user, loading] = useAuthState(firebaseAuth);
@@ -37,6 +38,7 @@ function App() {
         <Routes>
           <Route path="*" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/reset" element={<PasswordResetPage />} />
         </Routes>
       )}
       {!loading && user && client && (

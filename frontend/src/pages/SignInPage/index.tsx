@@ -38,6 +38,22 @@ export const SignInPage = () => {
     signInWithEmailAndPassword(loginEmail, loginPassword);
   };
 
+  const errorMessage = (() => {
+    if (error?.code === "auth/wrong-password") {
+      return "The provided password is not correct.";
+    }
+    if (error?.code === "auth/user-not-found") {
+      return " This eMail address is not in use";
+    }
+    if (error?.code === "auth/invalid-email") {
+      return " The eMail address is notvalid";
+    }
+    if (error?.code === "auth/user-not-found") {
+      return " The user fot this eMail address has been disabled.";
+    }
+    return "Authentication Failed!";
+  })();
+
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
@@ -74,14 +90,7 @@ export const SignInPage = () => {
             Sign in
           </Typography>
           <Box sx={{ mt: 1 }}>
-            {error && (
-              <Alert severity="error">
-                {/*  FIXME it would be great to present a message based on the error code provided in the error
-              https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#signinwithemailandpassword  
-              */}
-                Authentication failed.
-              </Alert>
-            )}
+            {error && <Alert severity="error">{errorMessage}</Alert>}
             <TextField
               margin="normal"
               required

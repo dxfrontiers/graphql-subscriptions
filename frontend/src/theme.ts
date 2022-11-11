@@ -1,15 +1,14 @@
-import {createTheme, ThemeOptions} from "@mui/material"
+import { createTheme, ThemeOptions } from "@mui/material";
 
 const quackerThemeOptions: ThemeOptions = {
   palette: {
     primary: {
-      main: '#2c7d4b',
+      main: "#2c7d4b",
     },
     secondary: {
-      main: '#e40b0b',
+      main: "#e40b0b",
     },
   },
 };
 
-export const quackerTheme= createTheme(quackerThemeOptions)
-
+export const quackerTheme = createTheme(quackerThemeOptions);

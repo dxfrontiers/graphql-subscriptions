@@ -1,4 +1,4 @@
-import {Box, Grid} from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -25,7 +25,7 @@ export const Feed: React.FC = () => {
   }, [subscriptionData]);
 
   return (
-    <Box >
+    <Box>
       {timeline.map((post, index) => {
         // @ts-ignore
         return <PostComponent key={index} post={post}></PostComponent>;

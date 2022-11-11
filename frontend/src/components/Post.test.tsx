@@ -13,15 +13,11 @@ const post: Post = {
 describe("Post", () => {
   it("should render post", () => {
     //Act
-    const { getByText, getByTestId } = render(<PostComponent post={post} />);
+    const { getByText } = render(<PostComponent post={post} />);
 
     //Assert
     expect(getByText(post.user.username)).toBeDefined();
     expect(getByText(post.message)).toBeDefined();
     expect(getByText(post.postedAt.toLocaleString())).toBeDefined();
-    expect(getByTestId("ChatBubbleIcon")).toBeDefined();
-    expect(getByTestId("RepeatIcon")).toBeDefined();
-    expect(getByTestId("FavoriteBorderOutlinedIcon")).toBeDefined();
-    expect(getByTestId("PublishIcon")).toBeDefined();
   });
 });

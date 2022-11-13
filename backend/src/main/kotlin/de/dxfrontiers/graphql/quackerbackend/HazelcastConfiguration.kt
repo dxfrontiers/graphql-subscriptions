@@ -12,7 +12,6 @@ import com.hazelcast.nio.ObjectDataOutput
 import com.hazelcast.nio.serialization.StreamSerializer
 import de.dxfrontiers.graphql.quackerbackend.model.Post
 import de.dxfrontiers.graphql.quackerbackend.model.User
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -36,6 +35,7 @@ class HazelcastConfiguration {
         implementation = UserSerializer(objectMapper)
       })
     }
+    c.networkConfig.join.multicastConfig.isEnabled = false
     return Hazelcast.newHazelcastInstance(c)
   }
 

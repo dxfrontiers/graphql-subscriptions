@@ -9,6 +9,7 @@ import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.graphql.data.method.annotation.SchemaMapping
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -40,9 +41,11 @@ class GraphQLController(private val postService: PostService, private val userSe
   
   /////// MUTATIONS
   @MutationMapping
+  @PreAuthorize("isAuthenticated()")
   fun createPost(@Argument message: String): Post = postService.createPost(getUser(), message)
 
   @MutationMapping
+  @PreAuthorize("isAuthenticated()")
   fun replyTo(@Argument postId: String, @Argument message: String) = postService.createReply(getUser(), postId, message)
 
 }

@@ -10,7 +10,7 @@ export interface PostComponentProps {
 export const PostComponent: React.FC<PostComponentProps> = (props) => {
   const {
     post: {
-      user: {username},
+      user: {username, displayName},
       postedAt,
       message,
       replies,
@@ -27,7 +27,7 @@ export const PostComponent: React.FC<PostComponentProps> = (props) => {
                 {avatarChar}
               </Avatar>
             }
-            title={username}
+            title={displayName}
             subheader={new Date(postedAt).toLocaleString()}
         />
         <CardContent>

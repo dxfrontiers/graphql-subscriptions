@@ -11,15 +11,7 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 @SpringBootApplication
-class QuackerBackendApplication {
-	companion object {
-		/**
-		 * For the sake of simplicity, this demo application uses a single user and
-		 * assumes this user to be using the system.
-		 */
-		const val SIMULATED_USERNAME = "Rhat1979"
-	}
-}
+class QuackerBackendApplication
 
 fun main(args: Array<String>) {
 	val context = runApplication<QuackerBackendApplication>(*args)
@@ -39,7 +31,6 @@ private fun populateSampleData(context: ConfigurableApplicationContext) {
 	val user1 = userService.createUser("Absom1962", "Max Krueger")
 	val user2 = userService.createUser("Citionabous", "Kristin Shuster")
 	val user3 = userService.createUser("Ablefte", "Sandra Seiler")
-	val user4 = userService.createUser(QuackerBackendApplication.SIMULATED_USERNAME, "Felix Fleischer")
 
 	val nextTime = timeSequenceGenerator(yesterday()).iterator()::next
 

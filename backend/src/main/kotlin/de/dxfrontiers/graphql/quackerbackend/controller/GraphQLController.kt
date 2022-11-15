@@ -1,6 +1,5 @@
 package de.dxfrontiers.graphql.quackerbackend.controller
 
-import de.dxfrontiers.graphql.quackerbackend.QuackerBackendApplication
 import de.dxfrontiers.graphql.quackerbackend.model.Post
 import de.dxfrontiers.graphql.quackerbackend.model.PostService
 import de.dxfrontiers.graphql.quackerbackend.model.User
@@ -13,11 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.security.Principal
 
 @Controller
 class GraphQLController(private val postService: PostService, private val userService: UserService) {
-
-  private fun getUser() = userService.getUser(QuackerBackendApplication.SIMULATED_USERNAME)!!
 
   /////// QUERIES
   @QueryMapping
@@ -38,14 +36,21 @@ class GraphQLController(private val postService: PostService, private val userSe
 
   @SchemaMapping(typeName = "Post")
   fun user(post: Post): Mono<User> = Mono.justOrEmpty(userService.getUser(post.username))
-  
+
   /////// MUTATIONS
   @MutationMapping
   @PreAuthorize("isAuthenticated()")
-  fun createPost(@Argument message: String): Post = postService.createPost(getUser(), message)
+  fun createPost(@Argument message: String, principal: Principal): Post = postService.createPost(
+    userService.getUser(principal), 
+    message
+  )
 
   @MutationMapping
   @PreAuthorize("isAuthenticated()")
-  fun replyTo(@Argument postId: String, @Argument message: String) = postService.createReply(getUser(), postId, message)
+  fun replyTo(@Argument postId: String, @Argument message: String, principal: Principal) = postService.createReply(
+    userService.getUser(principal),
+    postId,
+    message
+  )
 
 }

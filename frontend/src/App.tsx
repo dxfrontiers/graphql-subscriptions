@@ -9,10 +9,9 @@ import { Feed } from "./components/Feed";
 import { firebaseAuth } from "./firebase";
 import { SignInPage } from "./pages/SignInPage";
 import { SignUpPage } from "./pages/SignUpPage";
-
 import { ApolloProvider } from "@apollo/client";
 import React, { useMemo, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useIdToken } from "react-firebase-hooks/auth";
 import { Route, Routes } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { QuakBox } from "./components/QuakBox";
@@ -21,7 +20,7 @@ import { quackerTheme } from "./theme";
 import { PasswordResetPage } from "./pages/PasswordResetPage";
 
 function App() {
-  const [user, loading] = useAuthState(firebaseAuth);
+  const [user, loading] = useIdToken(firebaseAuth);
   const [token, setToken] = useState<string>();
 
   const client = useMemo(() => {

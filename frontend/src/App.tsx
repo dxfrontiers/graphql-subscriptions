@@ -1,35 +1,31 @@
-import {
-  Container,
-  Divider,
-  Grid,
-  ThemeProvider,
-  Typography,
-} from "@mui/material";
-import { Feed } from "./components/Feed";
-import { firebaseAuth } from "./firebase";
-import { SignInPage } from "./pages/SignInPage";
-import { SignUpPage } from "./pages/SignUpPage";
-import { ApolloProvider } from "@apollo/client";
-import React, { useMemo, useState } from "react";
-import { useIdToken } from "react-firebase-hooks/auth";
-import { Route, Routes } from "react-router-dom";
-import { NavBar } from "./components/NavBar";
-import { QuakBox } from "./components/QuakBox";
-import { clientFactory } from "./graphql/client";
-import { quackerTheme } from "./theme";
-import { PasswordResetPage } from "./pages/PasswordResetPage";
+import {Container, Divider, Grid, ThemeProvider, Typography,} from "@mui/material";
+import {Feed} from "./components/Feed";
+import {firebaseAuth} from "./firebase";
+import {SignInPage} from "./pages/SignInPage";
+import {SignUpPage} from "./pages/SignUpPage";
+import {ApolloProvider} from "@apollo/client";
+import React, {useMemo} from "react";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {Route, Routes} from "react-router-dom";
+import {NavBar} from "./components/NavBar";
+import {QuakBox} from "./components/QuakBox";
+import {clientFactory} from "./graphql/client";
+import {quackerTheme} from "./theme";
+import {PasswordResetPage} from "./pages/PasswordResetPage";
 
 function App() {
-  const [user, loading] = useIdToken(firebaseAuth);
-  const [token, setToken] = useState<string>();
+  const [user, loading] = useAuthState(firebaseAuth);
 
   const client = useMemo(() => {
-    if (user) user.getIdToken().then(setToken);
-    if (token) {
-      return clientFactory(token);
+    console.log(new Date())
+    console.log("client useMemo called")
+    console.log("user", user)
+    if (user) {
+      return clientFactory(user);
     }
     return undefined;
-  }, [user, token]);
+  }, [user]);
+  
   return (
     <>
       {loading && "Loading"}

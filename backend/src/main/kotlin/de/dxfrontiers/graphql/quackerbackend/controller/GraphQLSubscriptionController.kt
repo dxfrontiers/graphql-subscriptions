@@ -3,6 +3,7 @@ package de.dxfrontiers.graphql.quackerbackend.controller
 import de.dxfrontiers.graphql.quackerbackend.model.Post
 import de.dxfrontiers.graphql.quackerbackend.model.PostService
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import reactor.core.publisher.Flux
 import java.security.Principal
@@ -11,6 +12,7 @@ import java.security.Principal
 class GraphQLSubscriptionController(private val postService: PostService) {
 
   @SubscriptionMapping
+  @PreAuthorize("isAuthenticated()")
   fun onTimelineUpdate(principal: Principal): Flux<Post> {
 
     return Flux.create { sink ->
